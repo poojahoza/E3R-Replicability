@@ -127,7 +127,7 @@ def main():
     print('[Done].')
 
     print('Model Type: ' + args.model_type)
-    model = ProjectionScoreModel(input_emb_dim=args.in_emb_dim)
+    model = ProjectionScoreModel(input_emb_dim=args.in_emb_dim, output_emb_dim=args.out_emb_dim)
 
     if args.model_type == 'pairwise':
         loss_fn = nn.MarginRankingLoss(margin=1)
