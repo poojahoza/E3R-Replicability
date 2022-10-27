@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ***Please note that when you run the script below, the embeddings would be downloaded for Wikipedia2Vec, ERNIE and E-BERT which would take ~60 GB of space***
 
 ``` 
-bash /downloads.sh 
+bash downloads.sh 
 ```
 
 The script downloads.sh downloads the embeddings, re-ranking data and rank-lips library and stores in the ```Data/embeddings``` folder, ```Data/data``` folder and the rank-lips library is stored at ```Data/ranklips``` folder.
@@ -24,7 +24,7 @@ The script downloads.sh downloads the embeddings, re-ranking data and rank-lips 
 Next we generate the entity rankings with the embedding score between the candidate set of entities and entities linked in queries using Wikipedia2Vec, ERNIE and E-BERT entity embeddings.
 
 ``` 
-bash /entity_reranking.sh 
+bash entity_reranking.sh 
 ```
 
 The above script generates the output files ```Output/entity_reranking/$dataset/$embeddings/rerank.run``` in the ```Output/entity_reranking``` folder.
@@ -32,7 +32,7 @@ The above script generates the output files ```Output/entity_reranking/$dataset/
 We perform the interpolation between the embedding scores and the baseline using rank-lips library with the below script. ***Please note that rank-lips library works only on Debian Linux system.***
 
 ``` 
-bash /train_entity_reranking.sh 
+bash train_entity_reranking.sh 
 ```
 
 The above script generates the output files ```Output/entity_reranking/$dataset/$embeddings/l2r-run-test.run``` in the ```Output/entity_reranking``` folder.
