@@ -1,0 +1,4 @@
+tqdm==4.47.0
+scipy==1.6.0
+numpy==1.19.2
+typing_extensions==4.0.1
