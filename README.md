@@ -42,7 +42,7 @@ The run file ```l2r-run-test.run``` in the ```Output/entity_reranking/$dataset/$
 
 ## Neural Fine-tuning Model
 
-We first download the training and test data for both the TREC-CAR and DBpediaV2 datasets using the following script.
+Please install the requirements using the command given above if not done so already. We first download the training and test data for both the TREC-CAR and DBpediaV2 datasets using the following script.
 
 ``` 
 bash neural_downloads.sh 
