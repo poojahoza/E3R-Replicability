@@ -40,3 +40,30 @@ The above script generates the output files ```Output/entity_reranking/$dataset/
 The run file ```l2r-run-test.run``` in the ```Output/entity_reranking/$dataset/$embeddings``` folder is the final entity ranking file.
 
 
+## Neural Fine-tuning Model
+
+We first download the training and test data for both the TREC-CAR and DBpediaV2 datasets using the following script.
+
+``` 
+bash neural_downloads.sh 
+```
+
+To train the model, please run the following script.
+
+``` 
+bash train_model.sh --batch-size 1000 --use-cuda --cuda $cuda
+```
+
+Please provide the cuda device numbers such 0 or 1 depending on your machine for ```$cuda```. This will train the pairwise and pointwise models for both the datasets. 
+
+
+If you want to run the model on cpu please run the following command.
+
+``` 
+bash train_model.sh --batch-size 1000
+```
+
+The output will be stored in the folder ```Output/neural_model/$dataset/$embeddings``` folder.
+
+
+
