@@ -97,7 +97,7 @@ def evaluate(model, data_loader, device):
                 for (q_id, d_id, b_s, l) in zip(query_id, entity_id, batch_score, label):
                     if q_id not in rst_dict:
                         rst_dict[q_id] = {}
-                    if d_id not in rst_dict[q_id] or b_s > rst_dict[q_id][d_id]:
+                    if d_id not in rst_dict[q_id] or b_s > rst_dict[q_id][d_id][0]:
                         rst_dict[q_id][d_id] = [b_s, l]
 
     return rst_dict
