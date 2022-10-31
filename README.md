@@ -2,6 +2,11 @@
 
 This repository is for the paper **Entity Embeddings for Entity Ranking: A Replicability Study** submitted to ECIR 2023 Reproducibility Track. 
 
+```Code``` contains the re-implementation code of the entity re-ranking framework of the original paper *Gerritse et al. (2020) Graph-Embedding Empowered Entity Retrieval* and the code of the neural fine-tuning model.
+
+```Runs``` contains the run files generated for replicability and fine-tuning.
+
+
 ## Entity Re-ranking Framework
 
 This framework replicates the work of *Gerritse et al. (2020) Graph-Embedding Empowered Entity Retrieval*. The re-implementation code is found at Code/entity_reranking/entity_rerank.py that determines the embedding score between the entities linked in query and candidate set of entities. The steps to reproduce the replication study are given below.
