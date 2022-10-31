@@ -89,7 +89,7 @@ cat $outDir/set-0/ernie/pairwise/test.run $outDir/set-1/ernie/pairwise/test.run 
 cat $outDir/set-0/ernie/pointwise/test.run $outDir/set-1/ernie/pointwise/test.run $outDir/set-2/ernie/pointwise/test.run $outDir/set-3/ernie/pointwise/test.run $outDir/set-4/ernie/pointwise/test.run > $outDir/ernie.pointwise.test.run
 
 
-
+echo "Training continues..."
 
 
 dataDir="Data/data/TREC-CAR/train/wiki2vec"
@@ -105,6 +105,7 @@ if [[ "${useCude}" == "true" ]]; then
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize" --use-cuda --cuda 1
 else
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize"
+fi
 
 
 dataDir="Data/data/TREC-CAR/train/wiki2vec"
@@ -120,6 +121,7 @@ if [[ "${useCude}" == "true" ]]; then
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize" --use-cuda --cuda 1
 else
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize"
+fi
 
 
 
@@ -136,6 +138,7 @@ if [[ "${useCude}" == "true" ]]; then
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize" --use-cuda --cuda 1
 else
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize"
+fi
 
 
 dataDir="Data/data/TREC-CAR/train/ernie"
@@ -151,6 +154,7 @@ if [[ "${useCude}" == "true" ]]; then
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize" --use-cuda --cuda 1
 else
 	python3 $trainScript --model-type $mode --train "$trainData" --dev "$devData" --qrels "$devQrels" --save-dir "$savePath" --run "test.run" --epoch $epoch --in-emb-dim 100 --out-emb-dim 100 --batch-size "$batchSize"
+fi
 
 
 
