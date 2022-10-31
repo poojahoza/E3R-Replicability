@@ -1,4 +1,9 @@
 tqdm==4.47.0
-scipy==1.6.0
+scipy==1.5.4
 numpy==1.19.2
 typing_extensions==4.0.1
+torch==1.10.2
+transformers==4.18.0
+pytrec_eval==0.5
+
+
