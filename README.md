@@ -32,7 +32,7 @@ Next we generate the entity rankings with the embedding score between the candid
 bash entity_reranking.sh 
 ```
 
-The above script generates the output files ```Output/entity_reranking/$dataset/$embeddings/rerank.run``` in the ```Output/entity_reranking``` folder.
+The above script, [entity_reranking.sh](entity_reranking.sh) generates the output files ```Output/entity_reranking/$dataset/$embeddings/rerank.run``` in the ```Output/entity_reranking``` folder.
 
 We perform the interpolation between the embedding scores and the baseline using rank-lips library with the below script. ***The Rank-lips library is only provided for Linux systems. All experiments have been conducted on a Debian system.***
 
@@ -40,20 +40,20 @@ We perform the interpolation between the embedding scores and the baseline using
 bash train_entity_reranking.sh 
 ```
 
-The above script generates the output files ```Output/entity_reranking/$dataset/$embeddings/l2r-run-test.run``` in the ```Output/entity_reranking``` folder.
+The [train_entity_reranking.sh](train_entity_reranking.sh) script generates the output files ```Output/entity_reranking/$dataset/$embeddings/l2r-run-test.run``` in the ```Output/entity_reranking``` folder.
 
 The run file ```l2r-run-test.run``` in the ```Output/entity_reranking/$dataset/$embeddings``` folder is the final entity ranking file.
 
 
 ## Neural Fine-tuning Model
 
-Please install the requirements using the command given above if not done so already. We first download the training and test data for both the TREC-CAR and DBpediaV2 datasets using the following script.
+Please install the requirements using the command given above if not done so already. We first download the training and test data for both the TREC-CAR and DBpediaV2 datasets using the script [neural_downloads.sh](neural_downloads.sh).
 
 ``` 
 bash neural_downloads.sh 
 ```
 
-To train the model, please run the following script.
+To train the model, please run the following script of [train_model.sh](train_model.sh).
 
 ``` 
 bash train_model.sh --batch-size 1000 --use-cuda --cuda $cuda
