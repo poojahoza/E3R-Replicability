@@ -24,7 +24,7 @@ pip install -r requirements.txt
 bash downloads.sh
 ```
 
-The script downloads.sh downloads the embeddings, re-ranking data and rank-lips library and stores in the ```Data/embeddings``` folder, ```Data/data``` folder and the rank-lips library is stored at ```Data/ranklips``` folder.
+The script [downloads.sh](downloads.sh) downloads the embeddings, re-ranking data and rank-lips library and stores in the ```Data/embeddings``` folder, ```Data/data``` folder and the rank-lips library is stored at ```Data/ranklips``` folder.
 
 Next we generate the entity rankings with the embedding score between the candidate set of entities and entities linked in queries using Wikipedia2Vec, ERNIE and E-BERT entity embeddings.
 
