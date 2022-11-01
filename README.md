@@ -34,7 +34,7 @@ bash entity_reranking.sh
 
 The above script generates the output files ```Output/entity_reranking/$dataset/$embeddings/rerank.run``` in the ```Output/entity_reranking``` folder.
 
-We perform the interpolation between the embedding scores and the baseline using rank-lips library with the below script. ***Please note that rank-lips library works only on Debian Linux system.***
+We perform the interpolation between the embedding scores and the baseline using rank-lips library with the below script. ***The Rank-lips library is only provided for Linux systems. All experiments have been conducted on a Debian system.***
 
 ``` 
 bash train_entity_reranking.sh 
