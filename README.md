@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ***Please note that when you run the script below, the embeddings would be downloaded for Wikipedia2Vec, ERNIE and E-BERT which would take ~60 GB of space***
 
 ``` 
-bash [downloads.sh](downloads.sh)
+bash downloads.sh
 ```
 
 The script downloads.sh downloads the embeddings, re-ranking data and rank-lips library and stores in the ```Data/embeddings``` folder, ```Data/data``` folder and the rank-lips library is stored at ```Data/ranklips``` folder.
