@@ -40,7 +40,7 @@ We perform the interpolation between the embedding scores and the baseline using
 bash train_entity_reranking.sh 
 ```
 
-The [train_entity_reranking.sh](train_entity_reranking.sh) script generates the output files ```Output/entity_reranking/$dataset/$embeddings/l2r-run-test.run``` in the ```Output/entity_reranking``` folder.
+The [train_entity_reranking.sh](train_entity_reranking.sh) script generates the output files ```Output/entity_reranking/$dataset/$embeddings/l2r-run-test.run``` in the ```Output/entity_reranking``` folder. We optimize the Co-ordinate Ascent algorithm for MAP with random restarts of 5.
 
 The run file ```l2r-run-test.run``` in the ```Output/entity_reranking/$dataset/$embeddings``` folder is the final entity ranking file.
 
@@ -69,6 +69,8 @@ bash train_model.sh --batch-size 1000
 ```
 
 The output will be stored in the folder ```Output/neural_model/$dataset/$embeddings``` folder. For TREC-CAR, the output of the test collection is stored in ```Output/neural_model/$dataset/$embeddings/$mode``` folder. The values of $mode parameter is either pointwise or pairwise. The final entity ranking of test collection is stored as ```Output/neural_model/$dataset/$embeddings/$mode/test.run```. For DBpediaV2, the output of the test is stored at the location ```Output/neural_model/$dataset``` folder. The final entity ranking of the test are stored as ```Output/neural_model/$dataset/$embeddings.$mode.test.run```.
+
+The above script uses the batch size of 1000, 10 epochs, and learning rate of 2e-05.
 
 
 
