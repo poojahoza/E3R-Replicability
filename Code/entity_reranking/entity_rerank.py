@@ -9,134 +9,122 @@ from scipy import spatial
 import operator
 
 
-def load_run_file(file_path: str) -> Dict[str, List[str]]:
-    rankings: Dict[str, List[str]] = {}
-    with open(file_path, 'r') as file:
-        for line in file:
-            line_parts = line.split(" ")
-            query_id = line_parts[0]
-            entity_id = line_parts[2]
-            entity_list: List[str] = rankings[query_id] if query_id in rankings.keys() else []
-            entity_list.append(entity_id)
-            rankings[query_id] = entity_list
-    return rankings
+def load_run_file(file_path):
+    final_output = dict()
+    with open(file_path, 'r') as reader:
+        for line in reader:
+            data = line.split()
+            queryid = data[0]
+            entid = data[2]
+            ent_list = []
+            if queryid in final_output:
+                ent_list = final_output[queryid]
+            ent_list.append(entid)
+            final_output[queryid] = ent_list
+    return final_output
 
-def get_query_annotations(query_annotations: str) -> Dict[str, float]:
-    annotations = json.loads(query_annotations)
-    res: Dict[str, float] = {}
-    for ann in annotations:
-        a = json.loads(ann)
-        res[a['entity_name']] = a['score']
-    return res
+def read_annotations_file(input_file):
+    final_output = dict()
+    with open(input_file, 'r') as reader:
+        for item in reader:
+            data = item.split('\t')
+            q1 = data[0]
+            q2 = data[1]
+            final_output[q1] = q2
+    return final_output
 
-def cosine_distance(
-        query_entity: str,
-        target_entity: str,
-        embeddings: Dict[str, List[float]],
-        name2id: Dict[str, str],
-) -> float:
+def load_embeddings_file(embeddings_file):
+    final_embeddings = dict()
+    with open(embeddings_file, 'r') as reader:
+        final_embeddings = json.load(reader)
+    return final_embeddings
 
-    if query_entity in name2id and name2id[query_entity].strip() in embeddings and target_entity in embeddings:
-        emb_e1 = np.array(embeddings[name2id[query_entity].strip()])
-        emb_e2 = np.array(embeddings[target_entity])
-        return 1 - spatial.distance.cosine(emb_e1, emb_e2)
+def calculate_score(embeddings,
+        ent_1,
+        ent_2):
+    if ent_1 in embeddings and ent_2 in embeddings:
+        embed_ent_1 = np.array(embeddings[ent_1])
+        embed_ent_2 = np.array(embeddings[ent_2])
+
+        return 1 - spatial.distance.cosine(embed_ent_1, embed_ent_2)
     else:
         return 0.0
 
-def entity_score(
-        query_annotations: Dict[str, float],
-        target_entity: str,
-        embeddings: Dict[str, List[float]],
-        name2id: Dict[str, str],
-) -> float:
-    score = 0
-    for query_entity, conf in query_annotations.items():
-        distance = cosine_distance(query_entity, target_entity, embeddings, name2id)
-        score += distance * conf
-    return score
+
+def entity_reranking(run_data,
+        query_ann,
+        embed,
+        name2id,
+        top_k):
+
+    query_ent_score = dict()
+    
+    for queryid, ent in tqdm.tqdm(run_data.items(), total=len(run_data)):
+
+        top_k_ent = ent[:top_k]
+        q_ann = query_ann[queryid]
+        result_output = dict()
+
+        ann = json.loads(q_ann)
+        ann_dict = dict()
+        for a in ann:
+            data = json.loads(a)
+            ann_dict[data['entity_name']] = data['score']
+
+        ent_score_dict = dict()
+
+        for e in ent:
+            ent_score = 0.0
+            for qent, cscore in ann_dict.items():
+                cosine = 0.0
+                if qent in name2id:
+                    query_ent = name2id[qent].strip()
+                    cosine = calculate_score(embed, query_ent, e)
+                ent_score += cosine*cscore
+            ent_score_dict[e] = ent_score
+
+        query_ent_score[queryid] = ent_score_dict
+
+    return query_ent_score
 
 
-def re_rank(
-        run_dict: Dict[str, List[str]],
-        query_annotations: Dict[str, str],
-        embeddings: Dict[str, List[float]],
-        embedding_method: str,
-        name2id: Dict[str, str],
-        k: int,
-        out_file: str
-) -> None:
 
-    print('Re-ranking top-{} entities from the run file.'.format(k))
-    for query_id, query_entities in tqdm.tqdm(run_dict.items(), total=len(run_dict)):
-
-        query_entities = query_entities[:k]
-        ranked_entities: Dict[str, float] = rank_entities_for_query(
-            entity_list=query_entities,
-            query_annotations=get_query_annotations(query_annotations[query_id]),
-            embeddings=embeddings,
-            name2id=name2id
-        )
-        if not ranked_entities:
-            print('Empty ranking for query: {}'.format(query))
-        else:
-            run_file_strings: List[str] = to_run_file_strings(query_id, ranked_entities, embedding_method)
-
-            write_to_file(run_file_strings, out_file)
+def write_to_txt_file(data,
+        output_file):
+    with open(output_file, 'w') as writer:
+        for item in data:
+            writer.write(item+"\n")
 
 
-def rank_entities_for_query(
-        entity_list: List[str],
-        query_annotations: Dict[str, float],
-        embeddings: Dict[str, List[float]],
-        name2id: Dict[str, str],
-) -> Dict[str, float]:
-    ranking: Dict[str, float] = dict(
-        (entity, entity_score(
-            query_annotations=query_annotations,
-            target_entity=entity,
-            embeddings=embeddings,
-            name2id=name2id
-        ))
-        for entity in entity_list
-    )
+def reranking(run_data,
+        query_ann,
+        embed,
+        name2id,
+        top_k,
+        method,
+        output_file):
 
-    return dict(sorted(ranking.items(), key=operator.itemgetter(1), reverse=True))
+    query_reranking = entity_reranking(run_data,
+            query_ann,
+            embed,
+            name2id,
+            top_k)
 
+    final_data = []
 
-def to_run_file_strings(query: str, entity_ranking: Dict[str, float], embedding_method: str) -> List[str]:
-    embedding_method = embedding_method + '-ReRank'
-    run_file_strings: List[str] = []
-    rank: int = 1
-    for entity, score in entity_ranking.items():
-        if score > 0.0:
-            run_file_string: str = query + ' Q0 ' + entity + ' ' + str(rank) + ' ' + str(score) + ' ' + embedding_method
-            run_file_strings.append(run_file_string)
-            rank += 1
+    for q,entities in tqdm.tqdm(query_reranking.items(), total=len(query_reranking)):
+        sorted_entities = dict(sorted(entities.items(), key=operator.itemgetter(1), reverse=True))
+        rank = 1
+        for ent,score in sorted_entities.items():
+            if score > 0.0:
+                result_str = q+' Q0 '+ent+' '+str(rank)+' '+str(score)+' '+method+'-ReRank'
+                final_data.append(result_str)
+                rank += 1
 
-    return run_file_strings
+    write_to_txt_file(final_data, output_file)
 
 
-def write_to_file(run_file_strings: List[str], run_file: str) -> None:
-    with open(run_file, 'a') as f:
-        for item in run_file_strings:
-            f.write("%s\n" % item)
-
-
-def read_tsv(file: str) -> Dict[str, str]:
-    res = {}
-    with open(file, 'r') as f:
-        for line in f:
-            parts = line.split('\t')
-            key = parts[0]
-            value = parts[1]
-            res[key] = value
-    return res
-
-
-def main():
-    """
-    Main method to run code.
-    """
+if __name__ == "__main__":
     parser = argparse.ArgumentParser("Re-implementation of entity re-ranking using entity embeddings from Gerritse et al., 2020.")
     parser.add_argument("--run", help="Entity run file to re-rank.", required=True)
     parser.add_argument("--annotations", help="File containing TagMe annotations for queries.", required=True)
@@ -148,36 +136,32 @@ def main():
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
     print('Loading run file...')
-    run_dict: Dict[str, List[str]] = load_run_file(args.run)
+    run_dict = load_run_file(args.run)
     print('[Done].')
 
     print('Loading query annotations...')
-    query_annotations: Dict[str, str] = read_tsv(args.annotations)
+    query_annotations = read_annotations_file(args.annotations)
     print('[Done].')
 
     print('Loading entity embeddings...')
-    with open(args.embeddings, 'r') as f:
-        embeddings: Dict[str, List[float]] = json.load(f)
+    embeddings = load_embeddings_file(args.embeddings)
     print('[Done].')
 
     print('Loading name2id file...')
-    name2id = read_tsv(args.name2id)
+    name2id = read_annotations_file(args.name2id)
     print('[Done].')
 
     print("Re-Ranking run...")
-    re_rank(
-        run_dict=run_dict,
-        query_annotations=query_annotations,
-        embeddings=embeddings,
-        embedding_method=args.embedding_method,
-        name2id=name2id,
-        k=args.k,
-        out_file=args.save
+    reranking(
+        run_dict,
+        query_annotations,
+        embeddings,
+        name2id,
+        args.k,
+        args.embedding_method,
+        args.save
     )
     print('[Done].')
 
     print('New run file written to {}'.format(args.save))
 
-
-if __name__ == '__main__':
-    main()
