@@ -72,5 +72,45 @@ The output will be stored in the folder ```Output/neural_model/$dataset/$embeddi
 
 The above script uses the batch size of 1000, 10 epochs, and learning rate of 2e-5.
 
+## Updated Results
+
+***TREC CAR Y2 Test automatic results***
+
+The following results are based on updated Baseline. Here we use a different ECM-based retrieval baseline with better performance. We discovered test-data leakage in the baseline used in the paper and we rectify the issue in this baseline alongwith a better retrieval performance.
+
+| Model | MAP | P@R |
+|-------|-----|-----|
+|Wiki2Vec|0.1001|0.1489|
+|ERNIE|0.0668|0.1045|
+|E-BERT|0.0948|0.1429|
+|Baseline|0.1606|0.2302|
+|+Wiki2Vec|0.1686|0.2403|
+|+ERNIE|0.1590|0.2326|
+|+E-BERT|0.1663|0.2434|
+|Wiki2Vec-Pairwise|0.5411|0.5276|
+|Wiki2Vec-Pointwise|0.4351|0.4389|
+|ERNIE-Pairwise|0.4866|0.4884|
+|ERNIE-Pointwise|0.4358|0.4495|
+|E-BERT-Pairwise|0.6375|0.6505|
+|E-BERT-Pointwise|0.6109|0.6116|
+
+
+***DBpediaV2 results***
+
+| Dataset | DBpediaV2-All | INEX_LD | QALD-2 | SemSearch | ListSearch |
+| Model | MAP | P@R |MAP | P@R |MAP | P@R |MAP | P@R |MAP | P@R |
+|-------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|Wiki2Vec|0.3603|0.3824|0.3247|0.3466|0.3008|0.3150|0.4279|0.4333|0.3971|0.4453|
+|ERNIE|0.2866|0.3251|0.2432|0.3001|0.2416|0.2607|0.3385|0.3548|0.3277|0.3959|
+|E-BERT|0.3462|0.3713|0.3070|0.3394|0.2886|0.3025|0.4162|0.4341|0.3813|0.4206|
+|Baseline|0.4536|0.4330|0.4195|0.4135|0.3657|0.3585|0.6058|0.5487|0.4406|0.4269|
+|+Wiki2Vec|0.4540|0.4310|0.4132|0.4073|0.3705|0.3552|0.5945|0.5407|0.4528|0.4358|
+|+ERNIE|0.4587|0.4356|0.4256|0.4169|0.3708|0.3636|0.6013|0.5380|0.4541|0.4386|
+|+E-BERT|0.4551|0.4333|0.4226|0.4138|0.3667|0.3575|0.6012|0.5484|0.4472|0.4295|
+|Wiki2Vec-Pairwise|0.5408|0.5512|0.5246|0.5491|0.5603|0.5461|0.5212|0.5488|0.5502|0.5616|
+|Wiki2Vec-Pointwise|0.5049|0.5204|0.4852|0.5217|0.5281|0.5301|0.4869|0.5037|0.5115|0.5238|
+|ERNIE-Pairwise|0.4910|0.5194|0.4543|0.5251|0.5196|0.5171|0.4656|0.4955|0.5127|0.5409|
+|ERNIE-Pointwise|0.4851|0.5205|0.4607|0.5259|0.5281|0.5389|0.4234|0.4662|
+
 
 
