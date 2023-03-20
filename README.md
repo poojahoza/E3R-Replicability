@@ -97,7 +97,7 @@ The following results are based on updated Baseline. Here we use a different ECM
 
 ***DBpediaV2 results***
 
-| Dataset | DBpediaV2-All | INEX_LD | QALD-2 | SemSearch | ListSearch |
+| Dataset | Span <td colspan=2> DBpediaV2-All  <td colspan=2> INEX_LD <td colspan=2> QALD-2 <td colspan=2> SemSearch <td colspan=2> ListSearch |
 |---------|---------------|---------|--------|-----------|------------|
 | **Model** | **MAP** | **P@R** |**MAP** | **P@R** |**MAP** | **P@R** |**MAP** | **P@R** |**MAP** | **P@R** |
 |Wiki2Vec|0.3603|0.3824|0.3247|0.3466|0.3008|0.3150|0.4279|0.4333|0.3971|0.4453|
