@@ -76,7 +76,7 @@ The above script uses the batch size of 1000, 10 epochs, and learning rate of 2e
 
 ***TREC CAR Y2 Test automatic results***
 
-The following results are based on updated Baseline. Here we use a different ECM-based retrieval baseline with better performance. We discovered test-data leakage in the baseline used in the paper and we rectify the issue in this baseline alongwith a better retrieval performance.
+The following results are based on updated Baseline. Here we use a different ECM-based retrieval baseline with better performance. We arrive to the same conclusion.
 
 | Model | MAP | P@R |
 |-------|-----|-----|
@@ -257,6 +257,34 @@ The following results are based on updated Baseline. Here we use a different ECM
 <td>0.5389</td>
 <td>0.4234</td>
 <td>0.4662</td>
+<td>0.5127</td>
+<td>0.5409</td>
+</tr>
+<tr>
+<td>E-BERT-Pairwise</td>
+<td>0.3056</td>
+<td>0.3187</td>
+<td>0.2871</td>
+<td>0.3133</td>
+<td>0.2638</td>
+<td>0.2657</td>
+<td>0.2767</td>
+<td>0.295</td>
+<td>0.4010</td>
+<td>0.4113</td>
+</tr>
+<tr>
+<td>E-BERT-Pointwise</td>
+<td>0.2534</td>
+<td>0.2602</td>
+<td>0.2627</td>
+<td>0.2783</td>
+<td>0.2085</td>
+<td>0.2077</td>
+<td>0.2193</td>
+<td>0.2286</td>
+<td>0.3335</td>
+<td>0.3398</td>
 </tr>
 </tbody>
 </table>
